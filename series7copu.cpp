@@ -40,6 +40,31 @@ struct op2mnemonic
 		{0b00000000000000111110000000000000, "BSPI"},
 
 	};
+	std::map< uint32_t, std::string > header_types = 
+	{	
+		{0x20000000,  "Type 1"},
+                {0x40000000 : "Type 2"},
+	};
+
+	uint32_t TYPE1_MASK = 0x20000000;
+	uint32_t TYPE2_MASK = 0x40000000;
+
+	uint32_t OPCODE_MASK	= 0b00011000000000000000000000000000;
+
+	uint32_t TYPE_MASK	= 0b11100000000000000000000000000000;
+
+	uint32_t REG_ADD_MASK	= 0b00000000000000111110000000000000;
+        uint32_t TYPE1_ADD_MASK = 0b00000000000000111110000000000000;
+	uint32_t TYPE1_WORD_COUNT_MASK =  
+				  0b00000000000000000000011111111111;
+	uint32_t TYPE2_WORD_COUNT_MASK =
+	 			  0b00000111111111111111111111111111;
+
+	uint32_t OP_NOP      = 0b00;
+	uint32_t OP_READ     = 0b01;
+	uint32_t OP_WRITE    = 0b10;
+	uint32_t OP_RESERVED = 0b11; 
+
 	op2mnemonic(){
 	}
 	std::string operator [] (const uint32_t opc)
@@ -54,6 +79,8 @@ struct op2mnemonic
 };
 static int disassemble(RAsm *a, RAsmOp *op, const ut8 *b, int l)
 {
+	op2mnemonic op2mne;
+	
 
 	return 0;	
 }
