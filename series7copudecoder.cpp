@@ -72,6 +72,41 @@ struct op2mnemonic
 
 	//op2mnemonic(){
 //	}
+	std::string check_opcode(ut8 *b)
+	{
+		uint32_t word =
+			(b[0] << 24) | (b[1] << 16) |
+			(b[2] << 8) | b[3];
+		word &= OPCODE_MASK;
+		if(([&](){ return (word) ?
+			o2m.end() : o2m.find(word);})() == o2m.end())
+			return std::string("illegal opcode");
+		return o2m[word];
+	}
+	std::string check_register(ut8 *b)
+	{
+		uint32_t word =
+			(b[0] << 24) | (b[1] << 16) |
+			(b[2] << 8) | b[3];
+		word &= REG_ADD_MASK;
+		if(([&](){ return (word) ?
+			r2m.end() : r2m.find(word);})() == r2m.end())
+			return std::string("illegal opcode");
+		return r2m[word];
+	}
+	std::string check_header(ut8 *b)
+	{
+		uint32_t word =
+			(b[0] << 24) | (b[1] << 16) |
+			(b[2] << 8) | b[3];
+		word &= TYPE_MASK;
+		if(([&](){ return (word) ?
+			header_types.end() : 
+			header_types.find(word);})() == r2m.end())
+			return std::string("illegal opcode");
+		return r2m[word];
+	}
+
 	std::string operator [] (const uint32_t opc)
         {
 
@@ -88,6 +123,6 @@ static int decode(RAsm *a, RAsmOp *op, const ut8 *b, int l)
 {
 	op2mnemonic o2m;	
 	strcpy(op->buf_asm, o2m[b[0]].c_str());
-	return 0;	
+	return op->size;	
 }
 
